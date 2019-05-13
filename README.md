@@ -14,7 +14,7 @@
 <P ALIGN=LEFT STYLE="margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
 <FONT COLOR="#000000"><FONT FACE="Calibri"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: transparent">
 
-***WARNING:Only tested on 2.79, but should work for 2.80***</SPAN></FONT></FONT></FONT></P>
+***WARNING: Only tested on 2.79, but should work for 2.80***</SPAN></FONT></FONT></FONT></P>
 
 <P ALIGN=LEFT STYLE="margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
 
