@@ -2,23 +2,33 @@ import bpy
 
 context = bpy.context
 scene = context.scene
-gt = [i for i in bpy.data.objects if i.type == 'ARMATURE']
-arm_ob = bpy.data.objects[gt[0].name]
-gt_ob = bpy.data.objects[gt[0].name].children[0].name
+#get a list of armatures in the scene
+pk = [i for i in bpy.data.objects if i.type == 'ARMATURE']
+#get the armature object
+arm_ob = bpy.data.objects[pk[0].name]
+#get the armature name
+pk_ob = bpy.data.objects[pk[0].name].children[0].name
 
 
+#Lists
+#bones to target
 tr_to_list = ["head", "neck", "spine03", "spine02", "spine01", "lowerarm_L", "lowerarm_R", ]
+#bones to add IK
 ik_list = ["upperarm_L", "upperarm_R"]
+#bone target connections
 ik_tar = {"upperarm_L": "lowerarm_L", "upperarm_R": "lowerarm_R"}
+#track_to target names
+tr_to_tar_list = ('headTarget', 'leftTarget', 'rightTarget')
 
 
 #Track to Targets
-tar_get = "Empty"
-tar_get2 = "Empty.001"
-tar_get3 = "Empty.002"
+tar_get = tr_to_tar_list[0]
+tar_get2 = tr_to_tar_list[1]
+tar_get3 = tr_to_tar_list[2]
 
 
 #pino_kio_dictionary
+#{bone name:[influence, up axis, track axis, target name]}
 pk_dict = {'head': [1.0, 'UP_Y', 'TRACK_Z', tar_get],
         'neck': [0.5, 'UP_Y', 'TRACK_Z', tar_get],
         'spine03': [0.25, 'UP_Y', 'TRACK_Z', tar_get],
@@ -29,21 +39,35 @@ pk_dict = {'head': [1.0, 'UP_Y', 'TRACK_Z', tar_get],
 
 ############################################################################################################################### 
 
+#set armature to object mode if not
+if bpy.ops.object.mode_set(mode='OBJECT') == False:
+    bpy.ops.object.mode_set(mode='OBJECT')
+bpy.ops.object.select_all(action='DESELECT')
+
 #Create Custom Property
 bpy.data.armatures[0]["Arm_IK"] = True
 bpy.data.armatures[0]["Arm_IK"] = 0.75
 
-#Add Empty Targets
+
+#Add Track to Targets
 for i in range(3):
     bpy.ops.object.empty_add(type='SPHERE', radius=0.1, view_align=False, location=(0, -1, 1.5))
+bpy.data.objects["Empty"].name = tar_get
+bpy.data.objects["Empty.001"].location.x = 0.5
+bpy.data.objects["Empty.001"].name = tar_get2
+bpy.data.objects["Empty.002"].location.x = -0.5
+bpy.data.objects["Empty.002"].name = tar_get3
+
 
 #Select Armature
 bpy.data.objects[arm_ob.name].select = True
-bpy.context.scene.objects.active = arm_ob   
+bpy.context.scene.objects.active = arm_ob
+#Set pose mode 
 bpy.ops.object.mode_set(mode='POSE')
 
+############################################################################################################################### 
 
-#ADD DRIVERS
+#ADD BONE IK DRIVERS
 def add_IK_drive(pbs):
     tdr = arm_ob.driver_add("pose.bones[\"" + pbs + "\"].constraints[\"IK\"].influence").driver
     tdr.type = 'AVERAGE'
@@ -55,10 +79,9 @@ def add_IK_drive(pbs):
     print(pbs + "<<<driver>>>")
 
 
-
 ############################################################################################################################### 
 
-
+###__MAIN__###
 
 def pino_kio():
     #TRACK_TO_CONSTRAINT
@@ -82,22 +105,17 @@ def pino_kio():
             nc.use_rotation = True
             nc.use_location = True
             nc.chain_count = 1
-
-
+    
+    #Add Drivers
+    for d in ik_list:
+        add_IK_drive(d)
+    
+    #Set object mode
+    bpy.ops.object.mode_set(mode='OBJECT')
+    #Deselect everything
+    bpy.ops.object.select_all(action='DESELECT')
 
 ############################################################################################################################### 
 
-
+#run script
 pino_kio()
-
-#Add Drivers
-for d in ik_list:
-    add_IK_drive(d)
-
-bpy.ops.object.mode_set(mode='OBJECT')
-
-bpy.data.objects["Empty"].name = 'headTarget'
-bpy.data.objects["Empty.001"].name = 'leftTarget'
-bpy.data.objects["Empty.002"].name = 'rightTarget'
-
-
