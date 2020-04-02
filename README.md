@@ -14,7 +14,9 @@
 <P ALIGN=LEFT STYLE="margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
 <FONT COLOR="#000000"><FONT FACE="Calibri"><FONT SIZE=2 STYLE="font-size: 11pt"><SPAN STYLE="background: transparent">
 
-***WARNING: Only tested on 2.79, but should work for 2.80***</SPAN></FONT></FONT></FONT></P>
+***WARNING: IS NOW A PART OF THE SELF_DOT_ACCESSORIES ADDON**</SPAN></FONT></FONT></FONT></P>
+
+https://github.com/Noizirom/self_dot_accessories
 
 <P ALIGN=LEFT STYLE="margin-bottom: 0.14in; font-weight: normal; line-height: 115%">
 
